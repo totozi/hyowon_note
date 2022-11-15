@@ -66,7 +66,6 @@ public class LoginController {
 
 		// 구글 api 정보 대입
 		String client_id = list.get(0).toString();
-		String client_secure = list.get(1).toString();
 
 		String credential = request.getParameter("credential");
 
@@ -97,7 +96,6 @@ public class LoginController {
 	private static List<String> clientInfo(){
 		// google-api client info 문자열 선언
 		String client_id     = "";
-		String client_secure = "";
 
 		try {
 			//google-api.properties 가져오기
@@ -116,12 +114,10 @@ public class LoginController {
 
 			// key로 항목 읽기
 			client_id = properties.getProperty("client_id");
-			client_secure = properties.getProperty("client_secure");
 
 			List<String> list = new ArrayList<>();
 
 			list.add(client_id);
-			list.add(client_secure);
 
 			return list;
 
