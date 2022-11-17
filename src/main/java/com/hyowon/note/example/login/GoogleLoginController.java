@@ -2,6 +2,7 @@ package com.hyowon.note.example.login;
 
 
 import com.google.api.client.auth.oauth2.Credential;
+import com.google.api.client.auth.oauth2.TokenResponse;
 import com.google.api.client.googleapis.auth.oauth2.*;
 
 import com.google.api.client.http.HttpTransport;
@@ -9,12 +10,21 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson.JacksonFactory;
 
+import com.nimbusds.oauth2.sdk.Response;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,7 +40,7 @@ public class GoogleLoginController {
     String REDIRECT_URI = "";
 
     @GetMapping("/main")
-    public String readPage(Model model) {
+    public ModelAndView readPage(ModelAndView modelAndView) {
         // properties 파일 읽어오기
         String propFileName = "/properties/appication-oauth.properties";
         Properties prop = new Properties();
@@ -39,7 +49,7 @@ public class GoogleLoginController {
         try {
             if (inputStream != null) {
                 prop.load(inputStream);
-                
+
             } else {
                 throw new FileNotFoundException("프로퍼티 파일 '" + propFileName + "'을 resource에서 찾을 수 없습니다.");
             }
@@ -52,12 +62,13 @@ public class GoogleLoginController {
         REDIRECT_URI = prop.getProperty("redirect-url");
 
 
-        model.addAttribute("clientId", CLIENT_ID);
-        return "test/login";
+        modelAndView.addObject("clientId", CLIENT_ID);
+        modelAndView.setViewName("test/login");
+        return modelAndView;
     }
 
-    @PostMapping("/logged-in")
-    public String afterLogin(@RequestParam String credential) throws IOException {
+    @PostMapping("/main")
+    public String afterLogin(@RequestParam String credential, HttpServletResponse  response) throws IOException {
 
         // GoogleIdToken 발급
         try {
@@ -77,11 +88,12 @@ public class GoogleLoginController {
             // credential 이 idTokenString 임
             System.out.println("credential : " + credential);
 
-            // 이걸로 유저 정보 가져오는걸 보니 이 토큰이 Access 토큰인듯 
+            // 이걸로 유저 정보 가져오는걸 보니 이 토큰이 Access 토큰인듯
             //  TODO refresh 토큰, 클라이언트가 이 토큰을 쿠키에 저장하고 있도록 하기
             GoogleIdToken idToken = verifier.verify(credential);
             if (idToken != null) {
                 GoogleIdToken.Payload payload = idToken.getPayload();
+
 
                 // Print user identifier
                 String userId = payload.getSubject();
@@ -102,6 +114,27 @@ public class GoogleLoginController {
                 // Use or store profile information
                 // ...
 
+                String accessToken = idToken.toString();
+                System.out.println("accessToken : " + accessToken);
+
+//                response.setIdToken(accessToken).setTokenType("bearer");
+//                response.setStatus(401);
+//                response.setHeader("ACCESS_TOKEN", accessToken);
+                ResponseCookie cookie = ResponseCookie.from("accessToken", accessToken)
+                        .maxAge(7 * 24 * 60 * 60)
+                        .path("/")
+                        .secure(true)
+                        .httpOnly(true)
+                        .build();
+                response.setHeader("Set-Cookie", cookie.toString());
+                //헤더 설정을 해줄 때 set-cookie 설정을 해주는 것
+                
+                // TODO 쿠키에 저장되는 것 확인했음 이제 다른 곳에서 쿠키를 꺼내서 사용자 확인하면 될 듯
+
+                return "redirect:main";
+
+//                return ResponseEntity.ok(new GoogleTokenResponse().setIdToken(accessToken).setTokenType("bearer"));
+
             } else {
                 System.out.println("Invalid ID token.");
             }
@@ -109,6 +142,9 @@ public class GoogleLoginController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return "test/login";
+//        return ResponseEntity.badRequest().body(new GoogleTokenResponse().setIdToken("Invalid ID token").setTokenType("bearer"));
+        return "redirect:main";
     }
 }
+
+

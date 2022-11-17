@@ -17,14 +17,22 @@
 <h1>Login with google</h1>
 
 <!-- 파일 읽어서 client id 불러올 것 -->
-<div id="g_id_onload" th:data-client_id="${clientId}" data-client_id=""
-     data-login_uri="http://localhost:8080/note/login/logged-in" data-auto_prompt="false">
+
+<div id="g_id_onload"
+     data-client_id="98608838236-a3o7e39ht6dskn17770lvmikjc1a4pdi.apps.googleusercontent.com"
+     data-ux_mode="redirect"
+     data-redirect_uri="http://localhost:8080/note/login/main"
+     data-auto_prompt="false">
 </div>
-<div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline" data-text="sign_in_with"
-     data-shape="rectangular" data-logo_alignment="left">
+<div class="g_id_signin"
+     data-type="standard"
+     data-size="large"
+     data-theme="outline"
+     data-text="sign_in_with"
+     data-shape="rectangular"
+     data-logo_alignment="left">
 </div>
 
-<h1 th:text="${email}">기본 메시지</h1>
 
 </body>
 
