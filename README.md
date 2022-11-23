@@ -3,4 +3,4 @@
 ## Purpose of This Project
 ---
 ## Wireframe
-[wireframe_link](\documents\wireframe.md)
+[wireframe_link](https://github.com/totozi/hyowon_note/blob/main/documents/wireframe.md)
