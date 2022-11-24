@@ -6,13 +6,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/")
+@RequestMapping("/post")
 @Log4j2
-public class IndexController {
+public class PostController {
 
-    @GetMapping
-    public String home(){
-        log.info("index..................");
-        return "/blog/index";
+    @GetMapping("/list")
+    public String getList(){
+        log.info("post/list..................");
+        return "/blog/post/list";
     }
 }
