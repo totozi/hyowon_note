@@ -1,3 +1,10 @@
+buildscript {
+	ext {
+		queryDslVersion = "5.0.0"
+	}
+}
+
+
 plugins {
 	id 'java'
 	id 'war'
@@ -29,8 +36,39 @@ dependencies {
 	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+
+	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:3.1.0'
+
+	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
+
+	annotationProcessor(
+
+			"javax.persistence:javax.persistence-api",
+
+			"javax.annotation:javax.annotation-api",
+
+			"com.querydsl:querydsl-apt:${queryDslVersion}:jpa")
+
+
+	implementation 'org.modelmapper:modelmapper:3.1.0'
+
+	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:3.1.0'
+
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+
+
+	implementation 'net.coobird:thumbnailator:0.4.16'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+sourceSets {
+	main {
+		java {
+			srcDirs = ["$projectDir/src/main/java", "$projectDir/build/generated"]
+		}
+	}
 }
