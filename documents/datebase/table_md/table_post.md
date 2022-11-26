@@ -1,0 +1,13 @@
+| table\_name | table\_comment | column\_name          | data\_type | column\_type | column\_key | is\_nullable | column\_default | extra           | column\_comment                                      |
+| ----------- | -------------- | --------------------- | ---------- | ------------ | ----------- | ------------ | --------------- | --------------- | ---------------------------------------------------- |
+| post        |                | POST\_NO              | int        | int(11)      | PRI         | NO           |                 | auto\_increment | POST\_NO                                             |
+| post        |                | WRITER                | varchar    | varchar(50)  |             | NO           |                 |                 | POST\_WRITER                                         |
+| post        |                | TITLE                 | varchar    | varchar(100) |             | NO           |                 |                 | POST\_TITLE                                          |
+| post        |                | CONTENT\_AS\_MARKDOWN | text       | text         |             | NO           |                 |                 | POST\_CONTENT WRITTEN USING MARKDOWN                 |
+| post        |                | CONTENT\_AS\_HTML     | text       | text         |             | NO           |                 |                 | POAST\_CONTENT CONVERTED FROM MARKDOWN TO HTML       |
+| post        |                | VIEW\_COUNT           | int        | int(11)      |             | NO           |                 |                 | HOW MANY TIMES USERS READ THIS POST                  |
+| post        |                | VISIBLE\_YN           | char       | char(1)      |             | NO           |                 |                 | IF IT IS "N", THE POST CAN BE SEEN AND ONLY BY ADMIN |
+| post        |                | REG\_DATE             | date       | date         |             | NO           |                 |                 | THE DATE WHEN THE POST GOT POSTED                    |
+| post        |                | UPD\_DATE             | date       | date         |             | YES          | NULL            |                 | THE LAST DATE WHEN THE POST GOT UPDATED              |
+| post        |                | LAST\_CHG\_USER\_ID   | varchar    | varchar(50)  |             | YES          | NULL            |                 | COMMON INFORMATION FOR ALL TABLES                    |
+| post        |                | LAST\_CHG\_DATETIME   | datetime   | datetime     |             | NO           |                 |                 | COMMON INFORMATION FOR ALL TABLES                    |
