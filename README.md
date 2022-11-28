@@ -11,3 +11,7 @@
 ---
 ## Table Specification
 [Table_Specification_link](https://github.com/totozi/hyowon_note/blob/main/documents/datebase/table_md/table_post.md)
+
+---
+## What I have learnt from this project (Review Note)
+[](https://github.com/totozi/hyowon_note/blob/main/documents/hyowon_note_review.md)

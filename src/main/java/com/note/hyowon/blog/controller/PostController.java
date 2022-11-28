@@ -10,11 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping("/post")
@@ -31,6 +28,8 @@ public class PostController {
         System.out.println("pageNo : " + pageNo);
 
         PageRequestDTO pageRequestDTO = null;
+
+        // TODO 이 부분 메서드로 분리하기
 
         if(pageNo != null) {
             pageRequestDTO = PageRequestDTO.builder().page(pageNo).size(10).build();
