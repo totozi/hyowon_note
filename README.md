@@ -14,4 +14,4 @@
 
 ---
 ## What I have learnt from this project (Review Note)
-[](https://github.com/totozi/hyowon_note/blob/main/documents/hyowon_note_review.md)
+[Review Note](https://github.com/totozi/hyowon_note/blob/main/documents/hyowon_note_review.md)
