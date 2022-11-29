@@ -1,3 +1,17 @@
+# Lombok 주요 어노테이션 정리
+- @Getter
+- @Setter
+- @NoArgsConstructor : 기본 생성자 만들어줌
+- @AllArgsConstructor : 클래스의 모든 멤버변수를 받는 생성자를 만들어줌
+- @RequiredArgsConstructor : final 혹은 @NonNull이 붙은 field 만을 받는 생성자 생성
+- @Builder : builder pattern 방법으로 객체를 생성할 수 있다. 
+- @ToString : toString 메서드 생성
+- @EqualsAndHashCode : equals(equality 비교), hashCode(indentity 비교) 메서드 생성해줌
+- @Data : 위에 언급한 모든 annotation을 포함하는 Annotation
+- @SuperBuilder : parent instnace를 상속받는 child instance를 만들 때 부모 class의 field값도 지정할 수 있게 하기 위해서 사용(부모, 자식 객체 둘다 적용해야함)
+
+
+
 ### @SpringBootApplication
 - 스프링 부트의 기본적인 설정 선언
 - @ComponentScan : @component 어노테이션 및 @Service, @Repository, @Controller 등의 어노테이션을 스캔하여 Bean으로 등록해주는 어노테이션
@@ -68,15 +82,39 @@
     - @PostRemove : Delete메서드가 호출된 후에 실행되는 메서드
     - @PostLoad : Select조회가 일어난 직후에 실행되는 메서드
 
-# Lombok 주요 어노테이션 정리
-- @Getter
-- @Setter
-- @NoArgsConstructor : 기본 생성자 만들어줌
-- @AllArgsConstructor : 클래스의 모든 멤버변수를 받는 생성자를 만들어줌
-- @RequiredArgsConstructor : final 혹은 @NonNull이 붙은 field 만을 받는 생성자 생성
-- @Builder : builder pattern 방법으로 객체를 생성할 수 있다. 
-- @ToString : toString 메서드 생성
-- @EqualsAndHashCode : equals(equality 비교), hashCode(indentity 비교) 메서드 생성해줌
-- @Data : 위에 언급한 모든 annotation을 포함하는 Annotation
-- @SuperBuilder : parent instnace를 상속받는 child instance를 만들 때 부모 class의 field값도 지정할 수 있게 하기 위해서 사용(부모, 자식 객체 둘다 적용해야함)
+### @Component
+- class를 bean으로 등록하기 위한 Annotation
+- @Controller, @Service, @Repository : @Component의 구체화된 형태
 
+### @Repository 
+- 해당 클래스가 DB에 접근하는 클래스임을 타나냄
+- 스프링 데이터 접근 계층으로 인식하고 데이터 계층의 예외를 스프링 예외로 반환한다.
+
+### @Service 
+- Repository를 통해 DB에서 가져온 데이터를 컨트롤러에게 전달하는 클래스
+- 비즈니스 로직 처리와 도메인 모델의 적합성 검증 등을 수행
+
+### @Controller
+- 클라이언트로부터 전달된 데이터를 가공하기 위한 Controller
+- @RequestMapping으로 경로 설정
+
+### @Log4j2
+- 메시지 개체 로깅, Java 8 람다식 및 가비지 없는 로깅을 지원
+- 로그레벨
+    - OFF : 가능성이 가장 높은 순위. 로그를 끄기 위해 사용
+    - FATAL : 이른 종료를 일으키는 심각한 오류
+    - ERROR : 다른 런타임 오류 또는 예기치 못한 조건 등
+    - WARN : 오류에 가까운 것, 경고
+    - INFO : 런타임 이벤트의 시작/종료 등
+    - DEBUG : 시스템 전반의 흐름에 관한 정보, 로그에만 기록될 것으로 예측
+    - TRACE : 가장 세세한 정보
+
+### @Autowired
+- 필요한 의존 객체의 타입에 해당하는 bean을 찾아 주입한다.
+- constructor, setter, field에 사용 가능
+
+### @SpringBootTest 
+- 어노테이션을 통해 스프링부트 어플리케이션 테스트에 필요한 거의 모든 의존성을 제공
+
+### @Test
+- JUnit5의 어노테이션, Test 메서드로 인식을 하고 테스트

@@ -7,7 +7,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Pageable;
 
-
+/** 페이징 처리를 요청하는 DTO
+ *  페이징처리를 위한 조건들을 member로 가지고 있음
+ * @author Hyowon Na
+ * @version 1.0
+ * @since 1.0
+ */
 @Builder
 @AllArgsConstructor
 @Data

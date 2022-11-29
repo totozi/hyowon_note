@@ -11,6 +11,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 public class PostServiceTests {
 
+    /** PostService bean자동 주입
+     */
     @Autowired
     private PostService service;
 
