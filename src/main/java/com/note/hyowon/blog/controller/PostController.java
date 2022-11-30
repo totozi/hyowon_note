@@ -75,8 +75,36 @@ public class PostController {
         return "/blog/post/list";
     }
 
-    private PageResultDTO<PostDTO, PostEntity> getPagedList(Integer pageNo) {
 
+    /**
+     * Method       : selectOne
+     * Desc         : 특정 post의 내용 반환(html)
+     * Author       : Hyowon Na
+     * Param        : [model, postNo]
+     * Return       : java.lang.String
+     * throws       :
+     * Created Date : 2022-11-30
+    **/
+    @GetMapping("/detail")
+    public String selectOne(Model model, Integer postNo) {
+        PostDTO dto = postService.selectOne(postNo);
+
+        model.addAttribute("dto",dto);
+
+        return "/blog/post/detail";
+    }
+
+    /**
+     * Method       : getPagedList
+     * Desc         : 페이징 처리된 결과를 반환
+     * Author       : Hyowon Na
+     * Param        : [pageNo]
+     * Return       : com.note.hyowon.blog.dto.PageResultDTO<com.note.hyowon.blog.dto.PostDTO,
+     *                com.note.hyowon.blog.entity.PostEntity>
+     * throws       :
+     * Created Date : 2022-11-30
+    **/
+    private PageResultDTO<PostDTO, PostEntity> getPagedList(Integer pageNo) {
         // ----------------------------------------------------------------------------------
         // pageNo(페이지번호)가 null이면 1 세팅
         // ----------------------------------------------------------------------------------

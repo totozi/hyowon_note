@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.function.Function;
 
 @Service
@@ -29,6 +30,18 @@ public class PostServiceImpl implements PostService{
         Function<PostEntity, PostDTO> fn = (entity -> entityToDto(entity));
 
         return new PageResultDTO<>(result, fn);
+    }
+
+    @Override
+    public PostDTO selectOne(Integer postNo) {
+
+        Optional<PostEntity> optionalEntity = repository.findById(postNo.longValue());
+
+        if(!optionalEntity.isPresent()) {
+            throw new IllegalArgumentException();
+        }
+
+        return entityToDto(optionalEntity.get());
     }
 
     @Override

@@ -78,4 +78,5 @@ public interface PostService {
     }
 
 
+    PostDTO selectOne(Integer postNo);
 }

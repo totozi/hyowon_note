@@ -13,10 +13,10 @@ import lombok.Data;
 public class PostContentVO {
 
     // CONTENT_AS_Markdown
-    public String contentAsMarkdown;
+    private String contentAsMarkdown;
 
     // CONTENT_AS_HTML
-    public String contentAsHtml;
+    private String contentAsHtml;
 
     public String type;
 
@@ -24,6 +24,8 @@ public class PostContentVO {
     }
 
     public PostContentVO(String contentAsMarkdown, String contentAsHtml) {
+        this.setContentAsMarkdown(contentAsMarkdown);
+        this.setContentAsHtml(contentAsHtml);
     }
 
 

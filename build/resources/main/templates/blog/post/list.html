@@ -15,7 +15,7 @@
 
 
       <div class="list-group" th:each="dto, state : ${list}">
-        <a href="#" class="list-group-item list-group-item-action" th:utext="|${dto.postNo}. ${dto.title}|"></a>
+        <a th:href="@{/post/detail(postNo=${dto.postNo})}" class="list-group-item list-group-item-action" th:utext="|${dto.postNo}. ${dto.title}|"></a>
       </div>
     </div>
     <!-- Center-aligned -->
