@@ -1,11 +1,18 @@
 package com.note.hyowon.blog.dto;
 
+import com.note.hyowon.blog.vo.PostContentVO;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
+/**
+ * Class        : PostDTO
+ * Desc         : post entity와 매핑되는 DTO
+ * Author       : Hyowon Na
+ * Version      : 1.0.0
+ * Created Date : 2022-11-30
+**/
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -22,11 +29,8 @@ public class PostDTO extends CommonDTO {
     // TITLE
     private String title;
 
-    // CONTENT_AS_MARKDOWN
-    private String contentAsMarkdown;
-
-    // CONTENT_AS_HTML
-    private String contentAsHtml;
+    // ContentAsMarkdown , ContentAsHtml
+    private PostContentVO content;
 
     // VIEW_COUNT
     private Long viewCount;

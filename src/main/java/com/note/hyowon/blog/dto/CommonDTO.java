@@ -9,6 +9,14 @@ import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.LastModifiedBy;
 
 import java.time.LocalDateTime;
+
+/**
+ * Class        : CommonDTO
+ * Desc         : 모든 DTO의 조상, 로그용 컬럼값들과 매핑
+ * Author       : Hyowon Na
+ * Version      : 1.0.0
+ * Created Date : 2022-11-30
+**/
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor

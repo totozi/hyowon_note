@@ -7,12 +7,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Pageable;
 
-/** 페이징 처리를 요청하는 DTO
- *  페이징처리를 위한 조건들을 member로 가지고 있음
- * @author Hyowon Na
- * @version 1.0
- * @since 1.0
- */
+
+/**
+ * Class        : PageRequestDTO
+ * Desc         : 페이징 처리를 요청하는 DTO
+ * Author       : Hyowon Na
+ * Version      : 1.0.0
+ * Created Date : 2022-11-30
+**/
 @Builder
 @AllArgsConstructor
 @Data
@@ -26,7 +28,18 @@ public class PageRequestDTO {
         this.page = 1;
         this.size = 10;
     }
-    
+
+
+
+    /**
+     * Method       : getPageable
+     * Desc         : Pageable 객체 반환
+     * Author       : Hyowon Na
+     * Param        : [sort]
+     * Return       : org.springframework.data.domain.Pageable
+     * throws       : 
+     * Created Date : 2022-11-30
+    **/
     public Pageable getPageable(Sort sort) {
         return PageRequest.of(page - 1, size, sort);
         // JPA는 페이지 번호가 0부터 시작해서 page - 1 형태로 작성

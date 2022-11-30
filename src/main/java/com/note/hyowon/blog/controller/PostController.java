@@ -4,56 +4,64 @@ import com.note.hyowon.blog.dto.PageRequestDTO;
 import com.note.hyowon.blog.dto.PageResultDTO;
 import com.note.hyowon.blog.dto.PostDTO;
 import com.note.hyowon.blog.entity.PostEntity;
+import com.note.hyowon.blog.exception.PostErrorResponse;
 import com.note.hyowon.blog.service.PostService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
-/** post관련 컨트롤러
- *  post 목록을 보고 검색하는 기능
- *  특정 post를 열람하는 기능
- * @author Hyowon Na
- * @version 1.0
- * @since 1.0
- */
+/**
+ * Class        : PostController
+ * Desc         : post CRUD Controller
+ * Author       : Hyowon Na
+ * Version      : 1.0.0
+ * Created Date : 2022-11-30
+**/
 @Controller
 @RequestMapping("/post")
 @Log4j2
 public class PostController {
 
-    /** PostService bean 자동 주입
-     */
+    // bean 자동 주입
     @Autowired
     PostService postService;
 
-    /** post목록 페이지를 호출한다.
-     *  Get Method로 첫 방문이면 default로 최신글 목록을 보여주고
-     *  페이지 선택 시 해당 결과를 반환한다. (pagination)
-     *  @param model, pageNo
-     *  @return mapped String to call /blog/post/list.html
-     */
-    @GetMapping("/list")
-    public String selectList(Model model, Integer pageNo){
-        log.info("post/list..................");
 
+
+    /**
+     * Method       : selectList
+     * Desc         : TODO
+     * Author       : Hyowon Na
+     * Param        : [model, pageNo]
+     * Return       : java.lang.String
+     * throws       :
+     * Created Date : 2022-11-30
+    **/
+    @GetMapping("/list")
+    public String selectList(Model model, Integer pageNo) {
 
         // ----------------------------------------------------------------------------------
         // 페이징 처리된 DTO list 결과 반환
         // ----------------------------------------------------------------------------------
         PageResultDTO<PostDTO, PostEntity> resultDTO = getPagedList(pageNo);
 
+
         // ----------------------------------------------------------------------------------
         // PageResultDTO 결과값 확인
         // ----------------------------------------------------------------------------------
-        log.info("---------------------------------------------------------------");
-        log.info("PREV  : {}  ", resultDTO.isPrev()       ); // 이전 페이지 존재 여부
-        log.info("NEXT  : {}  ", resultDTO.isNext()       ); // 다음 페이지 존재 여부
-        log.info("TOTAL : {}  ", resultDTO.getTotalPage() ); // 전체 페이지 수
-        log.info("---------------------------------------------------------------");
+        log.debug("---------------------------------------------------------------");
+        log.debug("PREV  : {}  ", resultDTO.isPrev()       ); // 이전 페이지 존재 여부
+        log.debug("NEXT  : {}  ", resultDTO.isNext()       ); // 다음 페이지 존재 여부
+        log.debug("TOTAL : {}  ", resultDTO.getTotalPage() ); // 전체 페이지 수
+        log.debug("---------------------------------------------------------------");
 
 
         // ----------------------------------------------------------------------------------
@@ -86,4 +94,5 @@ public class PostController {
         // ----------------------------------------------------------------------------------
         return postService.selectList(pageRequestDTO);
     }
+
 }
