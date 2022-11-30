@@ -4,7 +4,7 @@ import lombok.Data;
 
 /**
  * Class        : PostContentVO
- * Desc         : Markdown과 Html 형식으로 post의 내용을 출력 및 상호 변환
+ * Desc         : Markdown과 Html 형식으로 post의 내용을 출력 및 상호 변환하기 위한 Value Object
  * Author       : Hyowon Na
  * Version      : 1.0.0
  * Created Date : 2022-11-30

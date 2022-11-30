@@ -47,7 +47,7 @@ public interface PostService {
         return entity;
     }
 
-    
+
     /**
      * Method       : entityToDto  
      * Desc         : PostEntity를 PostDTO 변환
