@@ -8,14 +8,9 @@ import com.note.hyowon.blog.vo.PostContentVO;
 
 
 /**
- * Class        : PostService
- * Desc         : Post 관련 서비스 인터페이스
- * Author       : Hyowon Na
- * Version      : 1.0.0
- * Created Date : 2022-11-30
-**/
+ * interface processes CRUD and others related to post
+ */
 public interface PostService {
-
 
     Long insert(PostDTO dto);
 
@@ -23,14 +18,9 @@ public interface PostService {
 
 
     /**
-     * Method       : dtoToEntity  
-     * Desc         : PostDTO를 PostEntity로 변환
-     * Author       : Hyowon Na
-     * Param        : [dto]
-     * Return       : com.note.hyowon.blog.entity.PostEntity
-     * throws       : 
-     * Created Date : 2022-11-30
-    **/ 
+     * @param dto to be converted to entity
+     * @return PostEntity
+     */
     default PostEntity dtoToEntity(PostDTO dto) {
         PostEntity entity = PostEntity.builder()
                 .postNo(dto.getPostNo())
@@ -49,22 +39,17 @@ public interface PostService {
 
 
     /**
-     * Method       : entityToDto  
-     * Desc         : PostEntity를 PostDTO 변환
-     * Author       : Hyowon Na
-     * Param        : [entity]
-     * Return       : com.note.hyowon.blog.dto.PostDTO
-     * throws       : 
-     * Created Date : 2022-11-30
-    **/ 
+     * @param entity to be converted to DTO
+     * @return PostDTO
+     */
     default PostDTO entityToDto(PostEntity entity) {
         PostDTO dto = PostDTO.builder()
                 .postNo(entity.getPostNo())
                 .writer(entity.getWriter())
                 .title(entity.getTitle())
                 .content(new PostContentVO(
-                         entity.getContentAsMarkdown()
-                       , entity.getContentAsHtml()
+                                entity.getContentAsMarkdown()
+                                , entity.getContentAsHtml()
                         )
                 )
                 .viewCount(entity.getViewCount())

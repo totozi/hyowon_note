@@ -18,7 +18,7 @@ import java.time.LocalDate;
 public class PostEntity extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy =  GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "POST_NO")
     private Long postNo;
 
@@ -47,7 +47,6 @@ public class PostEntity extends BaseEntity {
     @LastModifiedDate
     @Column(name = "UPD_DATE", nullable = true)
     private LocalDate updDate;
-
 
 
 }

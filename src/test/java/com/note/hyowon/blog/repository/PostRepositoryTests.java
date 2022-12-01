@@ -26,9 +26,7 @@ public class PostRepositoryTests {
                     .contentAsMarkdown("# 1. 제목입니다.\n" +
                             "## 2. TITLE is TITLE\n" +
                             "### 3. TITLE is TITLE")
-                    .contentAsHtml("<h1>1. 제목입니다.</h1>\n" +
-                            "<h2>2. TITLE is TITLE</h2>\n" +
-                            "<h3>3. TITLE is TITLE</h3>")
+                    .contentAsHtml("")
                     .viewCount(0L)
                     .visibleYn("Y")
                     .regDate(LocalDate.now())

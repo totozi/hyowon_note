@@ -19,6 +19,7 @@ public class PostServiceTests {
     @Autowired
     private PostService service;
 
+
     @Test
     public void testSelect() {
         PageRequestDTO pageRequestDTO = PageRequestDTO.builder().page(1).size(10).build();

@@ -3,12 +3,8 @@ package com.note.hyowon.blog.vo;
 import lombok.Data;
 
 /**
- * Class        : PostContentVO
- * Desc         : Markdown과 Html 형식으로 post의 내용을 출력 및 상호 변환하기 위한 Value Object
- * Author       : Hyowon Na
- * Version      : 1.0.0
- * Created Date : 2022-11-30
-**/
+ * Markdown과 Html 형식으로 post의 내용을 출력 및 상호 변환하기 위한 Value Object
+ */
 @Data
 public class PostContentVO {
 
@@ -30,34 +26,24 @@ public class PostContentVO {
 
 
     /**
-     * Method       : markdownToHtml
-     * Desc         : markdown 을 html으로 변환
-     * Author       : Hyowon Na
-     * Param        : [contentAsMarkdown]
-     * Return       : java.lang.String
-     * throws       :
-     * Created Date : 2022-11-30
-    **/
-    public String markdownToHtml(String contentAsMarkdown){
+     * TODO markdown 을 html으로 변환
+     *
+     * @param contentAsMarkdown String content input from a client
+     * @return String contentAsHtml
+     */
+    public String markdownToHtml(String contentAsMarkdown) {
         return null;
     }
-
 
     /**
-     * Method       : htmlToMarkdown
-     * Desc         : html을 markdown으로 변환
-     * Author       : Hyowon Na
-     * Param        : [contentAsHtml]
-     * Return       : java.lang.String
-     * throws       :
-     * Created Date : 2022-11-30
-    **/
-    public String htmlToMarkdown(String contentAsHtml){
+     * TODO html을 markdown으로 변환
+     *
+     * @param contentAsHtml String content output from a database
+     * @return String contentAsMarkdown
+     */
+    public String htmlToMarkdown(String contentAsHtml) {
         return null;
     }
-
-
-
 
 
 }

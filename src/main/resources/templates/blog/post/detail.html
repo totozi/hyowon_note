@@ -9,10 +9,12 @@
     <div class="container mt-3">
 
 
-      <div>
-        <div th:utext="${dto.title}"></div>
-        <div th:utext="${dto.content.contentAsHtml}"></div>
-      </div>
+    <div class="container pt-5">
+
+      <h1 th:utext="${dto.title}">title</h1>
+
+      <p th:utext="${dto.content.contentAsHtml}">content</p>
+
     </div>
 
 
