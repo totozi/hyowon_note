@@ -1,10 +1,10 @@
-package com.note.hyowon.blog;
+package com.hyowon.note;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class BlogApplicationTests {
+class NoteApplicationTests {
 
 	@Test
 	void contextLoads() {
