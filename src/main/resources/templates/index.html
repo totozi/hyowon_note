@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+hello world
+<button onclick="fetchEmail()">click</button>
+
+<p id="text"></p>
+<script>
+
+  function fetchEmail(){
+    fetch("http://localhost:8080/get/1")
+    .then(function(response){
+      response.json()
+      .then(function(user){
+        document.querySelector('#text').innerHTML = user.email;
+      })
+    })
+  };
+
+
+</script>
+</body>
+</html>
