@@ -183,3 +183,4 @@ target/
 /logs
 /gradle
 application.properties
+*.properties

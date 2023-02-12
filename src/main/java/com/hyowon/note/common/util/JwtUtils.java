@@ -1,0 +1,53 @@
+package com.hyowon.note.common.util;
+
+import io.jsonwebtoken.*;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+import javax.crypto.spec.SecretKeySpec;
+import java.security.Key;
+import java.util.Date;
+
+@Component
+@Log4j2
+public class JwtUtils {
+
+
+//    @Value("#{oauth['jwt.secretKey']}")
+    private String secretKeyStr = "skgydnjs123456skgydnjs123456skgydnjs123456"; // TODO 정상적인 문구로 바꾸거나 외부에서 가져오기
+
+    // 암복호화에 사용되는 키
+    private Key secretKey = new SecretKeySpec(secretKeyStr.getBytes(),  SignatureAlgorithm.HS256.getJcaName());
+
+    public String createToken(String email) {
+        Claims claims = Jwts.claims(); // 나중에 서버에서 파싱해서 볼 데이터
+        claims.put("email", email);
+        Date now = new Date();
+        
+        return Jwts.builder().setHeaderParam(Header.TYPE, Header.JWT_TYPE)
+                .setClaims(claims) // 데이터 넣기
+                .setIssuedAt(now)
+                .setExpiration(new Date(now.getTime() + (1000L * 60 * 30))) // 만료 기간
+                .signWith(secretKey, SignatureAlgorithm.HS256) // 암호화 알고리즘과 암복호화에 사용할 키
+                .compact(); // 토큰 생성
+    }
+
+    // jwt token 유효성 및 만료 기간 검사
+    public boolean validateToken(String jwtToken) {
+        try {
+            Jws<Claims> claims = Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(jwtToken);
+            return !claims.getBody().getExpiration().before(new Date());
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    // jwt token에서 데이터를 전달
+    public Claims getInformation(String token) {
+        Claims claims = Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody();
+        return claims;
+    }
+}
