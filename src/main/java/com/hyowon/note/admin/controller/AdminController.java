@@ -93,8 +93,14 @@ public class AdminController {
 
 
         log.info("adminLogin.......");
-        
 
-        return new ResponseEntity<>(jwtToken, HttpStatus.OK);
+        // header의 authentication에 담아 response
+        // body에는 요청받은 내용을 처리해서 보내줌
+        ResponseEntity response = ResponseEntity
+                .status(HttpStatus.OK)
+                .header("Authentication", jwtToken)
+                .body("requested data");
+
+        return response;
     }
 }
