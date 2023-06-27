@@ -6,6 +6,8 @@ import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.hyowon.note.admin.dto.GoogleApiDTO;
 import com.hyowon.note.common.util.JwtUtils;
 import lombok.NoArgsConstructor;
@@ -15,10 +17,12 @@ import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
@@ -43,7 +47,9 @@ public class AdminController {
 
 
     @PostMapping("login")
-    public ResponseEntity<String> adminLogin(GoogleApiDTO googleApiDTO) {
+//    public ResponseEntity<String> adminLogin(GoogleApiDTO googleApiDTO) {
+//    public ResponseEntity<String> adminLogin(GoogleApiDTO googleApiDTO) {
+    public ResponseEntity<String> adminLogin(@RequestBody String response) {
 
          /*
             1. 구글 로그인 후 컨트롤러로 credential 전송 ( V )
@@ -51,7 +57,17 @@ public class AdminController {
             3. DB의 admin 계정과 일치하면 jwt 토큰 발행해서 admin 페이지 url과 함께 전송
             3-1. 일치하지 않으면 access denied 와 함께 index 페이지로 이동
          */
+        // Gson 객체 생성
+        Gson gson = new Gson();
 
+        // JsonObject 생성
+        JsonObject jsonObject = gson.fromJson(response, JsonObject.class);
+
+        // 필드 값 추출
+        String credential = jsonObject.get("credential").getAsString();
+
+        GoogleApiDTO googleApiDTO = new GoogleApiDTO();
+        googleApiDTO.setCredential(credential);
         log.info(googleApiDTO.getCredential());
         log.info(googleApiDTO.getG_csrf_token());
 
@@ -94,13 +110,27 @@ public class AdminController {
 
         log.info("adminLogin.......");
 
+        // HttpHeaders 객체 생성 및 Location 헤더 설정
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(UriComponentsBuilder.fromPath("/admin/").build().toUri());
+
         // header의 authentication에 담아 response
         // body에는 요청받은 내용을 처리해서 보내줌
-        ResponseEntity response = ResponseEntity
-                .status(HttpStatus.OK)
-                .header("Authentication", jwtToken)
-                .body("requested data");
+//        ResponseEntity response = ResponseEntity
+//                .status(HttpStatus.OK)
+//                .header("Authentication", jwtToken)
+//                .body("Admin Is Logged In.");
 
-        return response;
+        // 새로운 화면으로 리다이렉트
+        return ResponseEntity.status(HttpStatus.OK)
+                .header("Location", "/admin/")
+                .header("Authentication", jwtToken)
+                .build();
+
+        // ResponseEntity 생성 및 응답 본문 설정
+        //ResponseEntity<String> responseEntity = new ResponseEntity<>("Admin Is Logged In.", headers, HttpStatus.FOUND);
+
+
+        //return responseEntity;
     }
 }

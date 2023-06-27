@@ -7,19 +7,20 @@
   <title>Document</title>
   <style>
     #g_id_onload {
-      height = 300px;
+      height : 300px;
     }
   </style>
 </head>
 <body>
   <h1>Admin Login</h1>
 
-  <body>
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+
   <div id="g_id_onload"
        data-client_id="98608838236-a3o7e39ht6dskn17770lvmikjc1a4pdi.apps.googleusercontent.com"
        data-login_uri="/admin/login"
-       data-auto_prompt="false">
+       data-auto_prompt="false"
+       data-callback="handleSignIn">
   </div>
   <div class="g_id_signin"
        data-type="standard"
@@ -29,6 +30,61 @@
        data-shape="rectangular"
        data-logo_alignment="left">
   </div>
-  </body>
+
 </body>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script>
+    function handleSignIn(googleUser) {
+
+    console.log(googleUser.credential);
+
+    // JWT 토큰 요청
+    fetch('/admin/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            credential: googleUser.credential
+        })
+    })
+    .then(response => {
+        if (response.ok) {
+            alert(response.url);
+            window.location.href = response.url;
+            //return response.json();
+        } else {
+            throw new Error('서버 응답이 실패했습니다.');
+        }
+    })
+    .then(data => {
+        // 서버 응답 처리
+        // data에는 서버에서 보낸 정보가 들어 있음
+        // 예: 리다이렉트, 화면 갱신 등
+
+        // 예시: 리다이렉트
+        if (data.redirectUrl) {
+            window.location.href = data.redirectUrl;
+        }
+    })
+    .catch(error => {
+        console.error('서버 요청 중 에러 발생:', error);
+    });
+
+    alert('handleSignIn() 함수가 실행되었습니다.');
+    }
+  function initializeGoogleSignIn() {
+    alert('initializeGoogleSignIn() 함수가 실행되었습니다.');
+    google.accounts.id.initialize({
+      client_id: '98608838236-a3o7e39ht6dskn17770lvmikjc1a4pdi.apps.googleusercontent.com',
+      callback: handleSignIn
+    });
+
+    google.accounts.id.prompt();
+  }
+
+  window.onload = function() {
+    initializeGoogleSignIn();
+  };
+</script>
 </html>
