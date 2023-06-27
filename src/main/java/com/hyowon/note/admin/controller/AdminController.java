@@ -24,6 +24,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.Collections;
@@ -45,6 +48,55 @@ public class AdminController {
         return "admin/login";
     }
 
+    @PostMapping("dashboard")
+    public void showDashboardPage(@RequestBody String jwt , HttpServletRequest request, HttpServletResponse response) {
+        log.info("showDashboardPage..................");
+        log.info("jwt : " + jwt);
+        // /admin/dashboard로 리디렉션
+
+        // JWT를 세션에 저장
+        HttpSession session = request.getSession();
+        session.setAttribute("jwt", jwt);
+
+        // GET 요청을 보낼 URL
+        String url = "/admin/dashboard";
+
+        // GET 요청 보내기
+        try {
+            response.sendRedirect(url);
+        } catch (IOException e) {
+            // 처리 중 오류 발생 시 예외 처리
+            e.printStackTrace();
+        }
+    }
+
+    @GetMapping("dashboard")
+    public String getDashboard(HttpSession session) {
+        // 대시보드 페이지를 반환하거나, 다른 처리를 수행할 수 있습니다.
+        String jwt = (String) session.getAttribute("jwt");
+        log.info("jwt for dashboard : " + jwt);
+
+        if (isValidJWT(jwt)) {
+            // 대시보드 페이지를 반환하거나, 다른 처리를 수행할 수 있습니다.
+            return "admin/dashboard";
+        } else {
+            // 인증이 실패한 경우, 다른 처리를 수행하거나 에러 페이지를 반환할 수 있습니다.
+            return "error";
+        }
+    }
+
+    private boolean isValidJWT(String jwt) {
+        // JWT 유효성 검사 로직을 구현합니다.
+        // 인증 토큰을 파싱하고 유효성을 확인하는 로직을 추가해야 합니다.
+        // 유효한 토큰인 경우 true를 반환하고, 그렇지 않은 경우 false를 반환합니다.
+
+        // 예시: Authorization 헤더의 Bearer 토큰을 추출하여 유효성을 검사합니다.
+        String token = jwt.replace("Bearer ", "");
+        // 유효성 검사 로직 구현...
+
+        // 예시로 true를 반환하도록 설정합니다.
+        return true;
+    }
 
     @PostMapping("login")
 //    public ResponseEntity<String> adminLogin(GoogleApiDTO googleApiDTO) {
@@ -119,7 +171,7 @@ public class AdminController {
 
         // 새로운 화면으로 리다이렉트
         return ResponseEntity.status(HttpStatus.OK)
-                .header("Location", "/admin/")
+                .header("Location", "/admin/dashboard")
                 .header("Authentication", jwtToken)
                 .build();
 
