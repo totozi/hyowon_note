@@ -110,10 +110,6 @@ public class AdminController {
 
         log.info("adminLogin.......");
 
-        // HttpHeaders 객체 생성 및 Location 헤더 설정
-        HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(UriComponentsBuilder.fromPath("/admin/").build().toUri());
-
         // header의 authentication에 담아 response
         // body에는 요청받은 내용을 처리해서 보내줌
 //        ResponseEntity response = ResponseEntity

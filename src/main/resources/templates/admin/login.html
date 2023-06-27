@@ -50,9 +50,23 @@
     })
     .then(response => {
         if (response.ok) {
-            alert(response.url);
-            window.location.href = response.url;
+            console.log(response);
+
+            const location = response.headers.get('Location');
+            const authentication = response.headers.get('Authentication');
+
+            console.log(location);
+            console.log(authentication);
+
+            // JWT를 세션 스토리지에 저장
+            sessionStorage.setItem('jwt', authentication);
+
+            // 필요한 곳에서 JWT를 가져와 사용
+            var jwt = sessionStorage.getItem('jwt');
+
+            //window.location.href = response.url;
             //return response.json();
+            window.location.href = location;
         } else {
             throw new Error('서버 응답이 실패했습니다.');
         }
@@ -63,9 +77,9 @@
         // 예: 리다이렉트, 화면 갱신 등
 
         // 예시: 리다이렉트
-        if (data.redirectUrl) {
-            window.location.href = data.redirectUrl;
-        }
+<!--        if (data.redirectUrl) {-->
+<!--            window.location.href = data.redirectUrl;-->
+<!--        }-->
     })
     .catch(error => {
         console.error('서버 요청 중 에러 발생:', error);
@@ -85,6 +99,8 @@
 
   window.onload = function() {
     initializeGoogleSignIn();
+    // 세션 스토리지에 있는 jwt 확인
+    alert("jwt : " + sessionStorage.getItem('jwt'));
   };
 </script>
 </html>
