@@ -5,34 +5,54 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
-  <style>
-    #g_id_onload {
-      height : 300px;
-    }
-  </style>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 </head>
 <body>
-  <h1>Admin Page 안 변하는 부분</h1>
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+  <div class="container-fluid">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link active" href="#">Active</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Link</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Link</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link disabled" href="#">Disabled</a>
+      </li>
+    </ul>
+  </div>
+</nav>
 
 <div id="content">
 
+  <div class="container pt-5">
+    <h1>어드민 로그인</h1>
 
-  <div id="g_id_onload"
-       data-client_id="98608838236-a3o7e39ht6dskn17770lvmikjc1a4pdi.apps.googleusercontent.com"
-       data-login_uri="/admin/login"
-       data-auto_prompt="false"
-       data-callback="handleSignIn">
-  </div>
-  <div class="g_id_signin"
-       data-type="standard"
-       data-size="large"
-       data-theme="outline"
-       data-text="sign_in_with"
-       data-shape="rectangular"
-       data-logo_alignment="left">
+    <div id="g_id_onload"
+         data-client_id="98608838236-a3o7e39ht6dskn17770lvmikjc1a4pdi.apps.googleusercontent.com"
+         data-login_uri="/admin/login"
+         data-auto_prompt="false"
+         data-callback="handleSignIn">
+    </div>
+    <div class="g_id_signin"
+         data-type="standard"
+         data-size="large"
+         data-theme="outline"
+         data-text="sign_in_with"
+         data-shape="rectangular"
+         data-logo_alignment="left">
+    </div>
   </div>
 
-</div>
+
+
+</div> <!-- end of content -->
 </body>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <script>
@@ -110,7 +130,7 @@
         console.error('서버 요청 중 에러 발생:', error);
     });
 
-    alert('handleSignIn() 함수가 실행되었습니다.');
+    //alert('handleSignIn() 함수가 실행되었습니다.');
     }
   function initializeGoogleSignIn() {
     //alert('initializeGoogleSignIn() 함수가 실행되었습니다.');

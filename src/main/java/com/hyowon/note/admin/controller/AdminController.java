@@ -49,10 +49,10 @@ public class AdminController {
     }
 
     @PostMapping("dashboard")
-    public void showDashboardPage(@RequestBody String jwt , HttpServletRequest request, HttpServletResponse response) {
+    //public void showDashboardPage(@RequestBody String jwt , HttpServletRequest request, HttpServletResponse response) {
+    public String showDashboardPage(@RequestBody String jwt , HttpServletRequest request) {
         log.info("showDashboardPage..................");
         log.info("jwt : " + jwt);
-        // /admin/dashboard로 리디렉션
 
         // JWT를 세션에 저장
         HttpSession session = request.getSession();
@@ -61,28 +61,8 @@ public class AdminController {
         // GET 요청을 보낼 URL
         String url = "/admin/dashboard";
 
-        // GET 요청 보내기
-        try {
-            response.sendRedirect(url);
-        } catch (IOException e) {
-            // 처리 중 오류 발생 시 예외 처리
-            e.printStackTrace();
-        }
-    }
-
-    @GetMapping("dashboard")
-    public String getDashboard(HttpSession session) {
-        // 대시보드 페이지를 반환하거나, 다른 처리를 수행할 수 있습니다.
-        String jwt = (String) session.getAttribute("jwt");
-        log.info("jwt for dashboard : " + jwt);
-
-        if (isValidJWT(jwt)) {
-            // 대시보드 페이지를 반환하거나, 다른 처리를 수행할 수 있습니다.
-            return "admin/dashboard";
-        } else {
-            // 인증이 실패한 경우, 다른 처리를 수행하거나 에러 페이지를 반환할 수 있습니다.
-            return "error";
-        }
+        // content html 보내기
+        return "/admin/dashboard";
     }
 
     private boolean isValidJWT(String jwt) {
