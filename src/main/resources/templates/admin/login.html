@@ -64,10 +64,12 @@
     fetch('/admin/login', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authentication': sessionStorage.getItem('jwt')
         },
         body: JSON.stringify({
-            credential: googleUser.credential
+            credential: googleUser.credential,
+            jwt: sessionStorage.getItem('jwt')
         })
     })
     .then(response => {
@@ -91,6 +93,7 @@
 
             // 요청 헤더 설정
             xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.setRequestHeader('Authentication', sessionStorage.getItem('jwt'));
 
             // 요청 본문 설정
             var requestBody = JSON.stringify({

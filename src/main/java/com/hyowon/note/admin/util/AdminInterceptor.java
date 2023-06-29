@@ -6,6 +6,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Enumeration;
 
 @Log4j2
 public class AdminInterceptor implements HandlerInterceptor {
@@ -26,6 +27,16 @@ public class AdminInterceptor implements HandlerInterceptor {
         // 로그인 여부, 사용자의 권한 등을 확인하여 처리하면 됩니다.
 
         log.info("preHandle@@@@@@@@@@@@@@@@");
+        Enumeration<String> headerNames = request.getHeaderNames();
+        while (headerNames.hasMoreElements()) {
+            String headerName = headerNames.nextElement();
+            String headerValue = request.getHeader(headerName);
+            System.out.println(headerName + ": " + headerValue);
+        }
+        if(request.getHeader("Authentication") != null) {
+            log.info(request.getHeader("Authentication"));
+            log.info("===jwt 인터셉트 성공 ====");
+        }
         if (true) {
             return true; // 요청을 계속 진행합니다.
         } else {

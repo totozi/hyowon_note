@@ -50,13 +50,14 @@ public class AdminController {
 
     @PostMapping("dashboard")
     //public void showDashboardPage(@RequestBody String jwt , HttpServletRequest request, HttpServletResponse response) {
-    public String showDashboardPage(@RequestBody String jwt , HttpServletRequest request) {
+//    public String showDashboardPage(@RequestBody String jwt , HttpServletRequest request) {
+    public String showDashboardPage(HttpServletRequest request) {
         log.info("showDashboardPage..................");
-        log.info("jwt : " + jwt);
+        log.info("jwt : " + (String) request.getAttribute("jwt"));
 
         // JWT를 세션에 저장
         HttpSession session = request.getSession();
-        session.setAttribute("jwt", jwt);
+        session.setAttribute("jwt", (String) request.getAttribute("jwt"));
 
         // GET 요청을 보낼 URL
         String url = "/admin/dashboard";
