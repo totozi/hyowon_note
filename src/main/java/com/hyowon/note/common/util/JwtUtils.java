@@ -84,4 +84,18 @@ public class JwtUtils {
         Claims claims = Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody();
         return claims;
     }
+
+
+    // 어떤 알고리즘으로 암호화할지 properties에서 가져오기
+    public Key generateKeyFromProperties(Properties properties) {
+        // properties 파일에서 알고리즘 정보를 가져옴
+        String algorithm = properties.getProperty("signature.algorithm");
+
+        // 알고리즘에 따라 키 생성
+        SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.forName(algorithm);
+        byte[] secretKeyBytes = // 키 생성 로직 (예: properties 파일에서 가져오는 등)
+        Key secretKey = new SecretKeySpec(secretKeyBytes, signatureAlgorithm.getJcaName());
+
+        return secretKey;
+    }
 }
