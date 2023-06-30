@@ -1,0 +1,3 @@
+function onclickExtendSession() {
+    alert("onclickExtendSession()");
+}

@@ -25,10 +25,13 @@
       </div>
     </div>
 
+
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script>
+      var email = "";
+      var timer = "";
+      
       function handleSignIn(googleUser) {
-
         console.log(googleUser.credential);
 
         // JWT 토큰 요청
@@ -56,56 +59,55 @@
               // JWT를 세션 스토리지에 저장
               sessionStorage.setItem('jwt', authentication);
 
-              // XMLHttpRequest 객체 생성
-              var xhr = new XMLHttpRequest();
-
-              // POST 요청 설정
-              xhr.open('POST', location);
-
-              // 요청 헤더 설정
-              xhr.setRequestHeader('Content-Type', 'application/json');
-              xhr.setRequestHeader('Authentication', sessionStorage.getItem('jwt'));
-
-              // 요청 본문 설정
-              var requestBody = JSON.stringify({
-                jwt: sessionStorage.getItem('jwt')
-              });
-
-              // 응답 처리
-              xhr.onload = function () {
-                if (xhr.status === 200) {
-                  // 응답이 성공적으로 받아진 경우
-                  console.log('POST 요청 성공');
-
-                  // 가져온 페이지의 HTML 내용을 담는 변수
-                  var pageContent = xhr.responseText;
-
-                  // #content 요소 선택
-                  var contentElement = document.getElementById('content');
-
-                  // #content 요소의 내용을 응답으로 받은 HTML 내용으로 교체
-                  contentElement.innerHTML = pageContent;
-
-                } else {
-                  // 응답이 실패한 경우
-                  console.log('POST 요청 실패');
-                }
-              };
-
               // POST 요청 보내기
-              xhr.send(requestBody);
-
-
+              return fetch(location, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authentication': sessionStorage.getItem('jwt')
+                },
+                body: JSON.stringify({
+                  jwt: sessionStorage.getItem('jwt')
+                })
+              });
             } else {
               throw new Error('서버 응답이 실패했습니다.');
             }
           })
+          .then(response => {
+            if (response.ok) {
+              console.log('POST 요청 성공');
+
+              // 응답 JSON 데이터 가져오기
+              return response.json();
+            } else {
+              console.log('POST 요청 실패');
+            }
+          })
+          .then(data => {
+            console.log(data);
+
+            var content = data.content;
+            var js_path = data.jsPath;
+
+            sessionStorage.setItem('email', data.email);
+            sessionStorage.setItem('timer', data.timer);
+
+
+
+            // #content 요소 선택
+            var contentElement = document.getElementById('content');
+
+            // #content 요소의 내용을 응답으로 받은 HTML 내용으로 교체
+            contentElement.innerHTML = content;
+
+            loadScript(js_path);
+          })
           .catch(error => {
             console.error('서버 요청 중 에러 발생:', error);
           });
-
-        //alert('handleSignIn() 함수가 실행되었습니다.');
       }
+
       function initializeGoogleSignIn() {
         //alert('initializeGoogleSignIn() 함수가 실행되었습니다.');
         google.accounts.id.initialize({
@@ -116,15 +118,37 @@
         google.accounts.id.prompt();
       }
 
+      // 전역 변수로 로드된 스크립트 파일을 추적
+      var scriptLoaded = false;
+
+      // 스크립트 파일을 동적으로 추가하는 함수
+      function loadScript() {
+        if (!scriptLoaded) {
+          // 스크립트 요소 생성
+          var script = document.createElement("script");
+          script.src = "/script.js";
+          script.async = true;
+
+          // 스크립트 로드 완료 이벤트 처리
+          script.onload = function () {
+            scriptLoaded = true;
+            console.log("Script loaded successfully.");
+          };
+
+          // 스크립트 추가
+          document.head.appendChild(script);
+        } else {
+          console.log("Script already loaded.");
+        }
+      }
+
       window.onload = function () {
         initializeGoogleSignIn();
-        // 세션 스토리지에 있는 jwt 확인
-        // alert("jwt : " + sessionStorage.getItem('jwt'));
       };
-
     </script>
-
   </div> <!-- end of content -->
+
+
 </body>
 
 </html>

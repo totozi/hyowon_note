@@ -10,6 +10,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.hyowon.note.admin.dto.GoogleApiDTO;
 import com.hyowon.note.common.util.JwtUtils;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -17,10 +19,12 @@ import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -28,8 +32,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Collections;
+import java.util.Date;
 
 @Controller
 @RequestMapping("/admin")
@@ -42,29 +50,66 @@ public class AdminController {
     @Value("#{oauth['spring.security.oauth2.client.registration.google.client-id']}")
     private String googleClientId;
 
-    @GetMapping("/")
-    public String showLoginPage() {
-        log.info("showLoginPage..................");
-        return "admin/login";
+    @GetMapping("")
+    public String getAdminDashboard() {
+        log.info("getAdminDashboard..................");
+        return "admin/dashboard";
     }
+
+//    @PostMapping("dashboard")
+//    public String showDashboardPage(HttpServletRequest request) {
+//        log.info("showDashboardPage..................");
+//        log.info("jwt : " + (String) request.getAttribute("jwt"));
+//
+//        // JWT를 세션에 저장
+//        HttpSession session = request.getSession();
+//        session.setAttribute("jwt", (String) request.getAttribute("jwt"));
+//
+//        // content html 보내기
+//        return "/admin/dashboard";
+//    }
+
 
     @PostMapping("dashboard")
-    //public void showDashboardPage(@RequestBody String jwt , HttpServletRequest request, HttpServletResponse response) {
-//    public String showDashboardPage(@RequestBody String jwt , HttpServletRequest request) {
-    public String showDashboardPage(HttpServletRequest request) {
-        log.info("showDashboardPage..................");
-        log.info("jwt : " + (String) request.getAttribute("jwt"));
+    public ResponseEntity<?> showDashboardPage(HttpServletRequest request) {
+        try {
 
-        // JWT를 세션에 저장
-        HttpSession session = request.getSession();
-        session.setAttribute("jwt", (String) request.getAttribute("jwt"));
 
-        // GET 요청을 보낼 URL
-        String url = "/admin/dashboard";
+            // 파일 읽기
+            ClassPathResource resource = new ClassPathResource("templates/admin/dashboard.html");
+            byte[] fileData = FileCopyUtils.copyToByteArray(resource.getInputStream());
+            String fileContent = new String(fileData, StandardCharsets.UTF_8);
 
-        // content html 보내기
-        return "/admin/dashboard";
+            // 기타 데이터
+            String jsPath = "script.js";
+
+
+            log.info("Authentication : " + request.getHeader("Authentication"));
+
+            Jws<Claims> claims = jwtUtils.getInformation(request.getHeader("Authentication"));
+
+            JsonObject jsonData = new JsonObject();
+            jsonData.addProperty("content", fileContent);
+            jsonData.addProperty("jsPath", jsPath);
+            jsonData.addProperty("email", (String) claims.getBody().get("email"));
+
+            Instant expiration = claims.getBody().getExpiration().toInstant();
+            Instant now = Instant.now();
+            Duration duration = Duration.between(now, expiration);
+            String timer = String.valueOf(duration.getSeconds());
+
+
+            jsonData.addProperty("timer", timer);
+
+
+            return ResponseEntity.ok(jsonData.toString());
+        } catch (IOException e) {
+            // 예외 처리
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred");
+        }
     }
+
+
 
     private boolean isValidJWT(String jwt) {
         // JWT 유효성 검사 로직을 구현합니다.
@@ -80,8 +125,6 @@ public class AdminController {
     }
 
     @PostMapping("login")
-//    public ResponseEntity<String> adminLogin(GoogleApiDTO googleApiDTO) {
-//    public ResponseEntity<String> adminLogin(GoogleApiDTO googleApiDTO) {
     public ResponseEntity<String> adminLogin(@RequestBody String response) {
 
          /*
@@ -101,8 +144,8 @@ public class AdminController {
 
         GoogleApiDTO googleApiDTO = new GoogleApiDTO();
         googleApiDTO.setCredential(credential);
-        log.info(googleApiDTO.getCredential());
-        log.info(googleApiDTO.getG_csrf_token());
+        //log.info(googleApiDTO.getCredential());
+        //log.info(googleApiDTO.getG_csrf_token());
 
         HttpTransport transport = new NetHttpTransport();
         JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
@@ -123,20 +166,20 @@ public class AdminController {
             userId = payload.getSubject();
             email = payload.getEmail();
 
-            log.info("userId : " + userId);
-            log.info("email : " + email);
+            //log.info("userId : " + userId);
+            //log.info("email : " + email);
 
 
             // DB에 email로 조회해서 맞으면 토큰 발행...
             if(email.equals("skgydnjs@gmail.com")) {
-                jwtToken = jwtUtils.createToken(userId);
-                log.info("jwtToken : " + jwtToken);
+                jwtToken = jwtUtils.createToken(email);
+                //log.info("jwtToken : " + jwtToken);
             }
 
 
         } catch (GeneralSecurityException e) {
             throw new RuntimeException(e);
-        } catch (IOException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
@@ -156,10 +199,5 @@ public class AdminController {
                 .header("Authentication", jwtToken)
                 .build();
 
-        // ResponseEntity 생성 및 응답 본문 설정
-        //ResponseEntity<String> responseEntity = new ResponseEntity<>("Admin Is Logged In.", headers, HttpStatus.FOUND);
-
-
-        //return responseEntity;
     }
 }
