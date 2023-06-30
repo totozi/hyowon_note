@@ -49,6 +49,7 @@ public class JwtUtils {
             System.out.println(secretKeyStr);
 
             // 암복호화에 사용되는 키
+            SignatureAlgorithm signatureAlgorithm = getEncodingAlgorithm(properties);
             secretKey = new SecretKeySpec(secretKeyStr.getBytes(),  SignatureAlgorithm.HS256.getJcaName());
 
         } catch (IOException e) {
@@ -87,15 +88,14 @@ public class JwtUtils {
 
 
     // 어떤 알고리즘으로 암호화할지 properties에서 가져오기
-    public Key generateKeyFromProperties(Properties properties) {
+    public SignatureAlgorithm getEncodingAlgorithm(Properties properties) {
+        
         // properties 파일에서 알고리즘 정보를 가져옴
         String algorithm = properties.getProperty("signature.algorithm");
 
-        // 알고리즘에 따라 키 생성
+        // 알고리즘 선택
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.forName(algorithm);
-        byte[] secretKeyBytes = // 키 생성 로직 (예: properties 파일에서 가져오는 등)
-        Key secretKey = new SecretKeySpec(secretKeyBytes, signatureAlgorithm.getJcaName());
 
-        return secretKey;
+        return signatureAlgorithm;
     }
 }
