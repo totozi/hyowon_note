@@ -162,5 +162,41 @@
     // 세션 스토리지에 있는 jwt 확인
     // alert("jwt : " + sessionStorage.getItem('jwt'));
   };
+
+  //타이머 함수
+    function countdownTimer() {
+    const startTime = Date.now(); // 타이머 시작 시간
+    const endTime = startTime + 30 * 60 * 1000; // 시작 시간으로부터 30분(밀리초) 후의 시간 계산
+
+        function updateTimer() {
+            const currentTime = Date.now(); // 현재 시간
+            const remainingTime = endTime - currentTime; // 남은 시간 (밀리초)
+
+            if (remainingTime <= 0) {
+                // 타이머 종료
+                const timerElement = document.getElementById("session-time");
+                timerElement.textContent = "00:00";
+                return;
+            }
+
+            const totalSeconds = Math.floor(remainingTime / 1000); // 남은 시간을 초로 환산
+            const minutes = Math.floor(totalSeconds / 60); // 분 계산
+            const seconds = totalSeconds % 60; // 초 계산
+
+            // 타이머 업데이트
+            const timerElement = document.getElementById("session-time");
+            timerElement.textContent = `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+
+            // 1초마다 업데이트
+            requestAnimationFrame(updateTimer);
+        }
+
+        updateTimer(); // 최초 실행
+
+
+    }
+
+    countdownTimer(); // 타이머 시작
+  
 </script>
 </html>
