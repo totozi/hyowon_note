@@ -25,9 +25,18 @@ public class AdminInterceptor implements HandlerInterceptor {
         // jwt가 null 이거나 만료되면 로그인 페이지로 보내기
         String jwtStr =  request.getHeader("Authentication");
 
-        log.info("jwtStr : " + jwtStr);
-
         boolean isValidToken = false;
+
+        // 요청 URL 추출
+        String requestURI = request.getRequestURI();
+
+        log.info("requestURI : " + requestURI);
+        log.info("preHandle.jwtStr : " + jwtStr);
+        
+        // 요청uri가 /admin/login 라면 토큰 발행해야 하므로 return true로 인터셉터 스킵
+        if(requestURI.equals("/admin/login")) {
+            return true;
+        }
 
         if(jwtStr == null) {
             log.info("Authentication is null.");
@@ -39,6 +48,7 @@ public class AdminInterceptor implements HandlerInterceptor {
         if(jwtUtils == null) {
             jwtUtils = new JwtUtils();
         }
+
 
         // 토큰이 유효하지 않으면
         if(!jwtUtils.isValidToken(jwtStr)) {
