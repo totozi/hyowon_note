@@ -1,0 +1,26 @@
+src											
+	main										
+		java									
+			com								
+				hyowon							
+					note						
+						admin					
+							controller				
+								AdminLoginCtl.java			로그인 관련 컨트롤러
+								AdminDashboardCtl.java			대쉬보드 관련 컨트롤러
+								AdminPostCtl.java			post관련 컨트롤러
+											
+						common					
+							config				
+								WebConfig.java			
+								PropertiesConfig.java			
+							util				
+								JwtUtils.java			
+							interceptor				
+								AdminInterceptor.java			Admin 패키지 요청 관련 인터셉터
+						main					
+							controller				
+								MainCtl.java			메인화면 컨트롤러
+											
+						NoteApplication.java					
+						ServletInitializer.java					
